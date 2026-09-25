@@ -31,6 +31,7 @@
       <div class="field"><label for="name">お名前</label><input id="name" name="name" autocomplete="name" required></div>
       <div class="field"><label for="furigana">ふりがな</label><input id="furigana" name="furigana" autocomplete="off" required></div>
       <div class="field"><label for="type">64タイプ（英字コード）</label><select id="type" name="type" required><option value="">選択してください</option></select></div>
+      <div class="field"><label for="job">応募職種</label><select id="job" name="job" required><option value="">選択してください</option><option value="個人宅訪問営業">個人宅訪問営業</option><option value="事務・営業支援">事務・営業支援</option><option value="動画編集・制作">動画編集・制作</option></select></div>
       <p class="hint">64タイプは100問版の診断結果に表示された英字コードを選んでください。</p>
     </section>
     <p class="progress" id="progress" aria-live="polite">回答済み 0 / 20問</p>
@@ -72,10 +73,10 @@ form.addEventListener('change',e=>{if(e.target.matches('select'))updateProgress(
 form.addEventListener('input',e=>{e.target.classList.remove('error');document.getElementById('message').textContent='' });
 form.addEventListener('submit',e=>{
   e.preventDefault();
-  const fields=[document.getElementById('name'),document.getElementById('furigana'),typeSelect,...selectors];
+  const fields=[document.getElementById('name'),document.getElementById('furigana'),typeSelect,document.getElementById('job'),...selectors];
   const missing=fields.find(field=>!field.value.trim());
   if(missing){missing.classList.add('error');document.getElementById('message').textContent=missing.id.startsWith('answer')?`問${missing.id.slice(6)}を選択してください。`:`${missing.labels[0].textContent}を入力・選択してください。`;missing.scrollIntoView({behavior:'smooth',block:'center'});missing.focus({preventScroll:true});return}
-  const lines=[`お名前：${document.getElementById('name').value.trim()}`,`ふりがな：${document.getElementById('furigana').value.trim()}`,`64タイプ：${typeSelect.value}`,'','インテック式 回答'];
+  const lines=[`お名前：${document.getElementById('name').value.trim()}`,`ふりがな：${document.getElementById('furigana').value.trim()}`,`64タイプ：${typeSelect.value}`,`応募職種：${document.getElementById('job').value}`,'','インテック式 回答'];
   for(let i=0;i<20;i++)lines.push(`${i+1}-${selectors[i].value}`);
   const resultPanel=document.getElementById('resultPanel');document.getElementById('result').value=lines.join('\n');resultPanel.hidden=false;
   document.getElementById('copyMessage').textContent='';resultPanel.scrollIntoView({behavior:'smooth',block:'start'});
